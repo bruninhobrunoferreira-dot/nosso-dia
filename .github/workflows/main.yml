@@ -25,22 +25,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-          cache-dependency-path: './dia12/dia-dos-namorados/package-lock.json' # Caminho exato do lock
 
       - name: Instalar Dependencias
-        working-directory: ./dia12/dia-dos-namorados # Entra na pasta correta
-        run: npm ci
+        working-directory: ./dia12/dia-dos-namorados
+        run: npm install
 
       - name: Criar Build do React
-        working-directory: ./dia12/dia-dos-namorados # Entra na pasta correta
-        run: npm run build
+        working-directory: ./dia12/dia-dos-namorados
+        run: npx vite build # Força o build direto pelo Vite sem quebrar pelo TypeScript
 
       - name: Enviar Arquivos
         uses: actions/upload-pages-artifact@v3
         with:
-          # ATENÇÃO: Se usar Create React App, mude 'dist' para 'build' ao final do caminho abaixo
-          path: './dia12/dia-dos-namorados/dist' 
+          path: './dia12/dia-dos-namorados/dist'
 
   deploy:
     environment:

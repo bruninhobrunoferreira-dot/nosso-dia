@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./nosso-dia # DIZ AO ROBÔ PARA ENTRAR NA SUA PASTA REACT
+        working-directory: ./nosso-dia
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,11 +27,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-          cache-dependency-path: './nosso-dia/package-lock.json'
 
       - name: Instalar Dependencias
-        run: npm ci
+        run: npm install
 
       - name: Criar Build do React
         run: npm run build || npm run build-vite || true
@@ -54,5 +52,3 @@ jobs:
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-

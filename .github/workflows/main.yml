@@ -27,21 +27,21 @@ jobs:
 
       - name: Instalar Dependencias
         run: |
-          cd nosso-dia
+          cd dia12
           npm install
 
       - name: Criar Build do React
         run: |
-          cd nosso-dia
+          cd dia12
           npm run build || npm run build-vite || true
 
       - name: Enviar Arquivos
         uses: actions/upload-pages-artifact@v3
         with:
           path: |
-            ./nosso-dia/build
-            ./nosso-dia/dist
-            ./nosso-dia/
+            ./dia12/build
+            ./dia12/dist
+            ./dia12/
 
   deploy:
     environment:
@@ -53,3 +53,4 @@ jobs:
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+

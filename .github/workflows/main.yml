@@ -16,9 +16,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./nosso-dia
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,9 +35,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: |
-            ./nosso-dia/build
-            ./nosso-dia/dist
-            ./nosso-dia/
+            ./build
+            ./dist
+            ./
 
   deploy:
     environment:
@@ -52,3 +49,4 @@ jobs:
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+

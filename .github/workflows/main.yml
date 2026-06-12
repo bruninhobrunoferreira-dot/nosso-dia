@@ -2,8 +2,9 @@ name: Deploy React Automatico
 
 on:
   push:
-    branches: ["main", "master"]
+    branches: ["main"] # Mude para master se sua branch principal for master
 
+# Permissões necessárias para o GitHub Actions fazer o deploy no Pages
 permissions:
   contents: read
   pages: write
@@ -11,11 +12,12 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,33 +26,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Instalar Dependencias
-        run: |
-          cd dia12
-          npm install
+        run: npm ci # Instalação limpa e mais rápida para CI
 
       - name: Criar Build do React
-        run: |
-          cd dia12
-          npm run build || npm run build-vite || true
+        run: npm run build
 
       - name: Enviar Arquivos
         uses: actions/upload-pages-artifact@v3
         with:
-          path: |
-            ./dia12/build
-            ./dia12/dist
-            ./dia12/
+          # ATENÇÃO: Se usar Create React App, mude 'dist' para 'build'
+          path: './dist' 
 
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps: deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Publicar no GitHub Pages
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 

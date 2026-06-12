@@ -2,7 +2,7 @@ name: Deploy React Automatico
 
 on:
   push:
-    branches: ["main", "master"] # Funciona independente do nome da sua branch
+    branches: ["main", "master"]
 
 permissions:
   contents: read
@@ -16,6 +16,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./nosso-dia # DIZ AO ROBÔ PARA ENTRAR NA SUA PASTA REACT
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,6 +28,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          cache-dependency-path: './nosso-dia/package-lock.json'
 
       - name: Instalar Dependencias
         run: npm ci
@@ -36,9 +40,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: |
-            ./build
-            ./dist
-            ./
+            ./nosso-dia/build
+            ./nosso-dia/dist
+            ./nosso-dia/
 
   deploy:
     environment:
@@ -50,4 +54,5 @@ jobs:
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
 
